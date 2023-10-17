@@ -1,10 +1,7 @@
-import os
 import telebot
 
-from utils import gera_horarios, gravar_consulta, recuperar_dados, alterar_consulta, deletar_consulta
+from utils import gera_horarios, gravar_consulta, recuperar_dados, alterar_consulta, deletar_consulta, gravar_mensagem
 from model import Consulta
-
-BOT_TOKEN = os.environ.get('BOT_TOKEN')
 
 bot = telebot.TeleBot("6558005428:AAEatQ_hrVQUV0Rv0FqKOWIGXOfmMcHtz3E")
 
@@ -21,6 +18,7 @@ cpf = ''
 
 @bot.message_handler(commands=['comecar'])
 def sign_handler(message):
+    gravar_mensagem(message.text)
     text = ("Olá, como posso ajudar?\nEscolha uma opção:\n"
             "*1 - Agendamento de consulta\n*"
             "*2 - Cancelamento de Consulta\n*"
@@ -33,6 +31,7 @@ def sign_handler(message):
 
 
 def option_choose(message):
+    gravar_mensagem(message.text)
     option = message.text
     if option == '1':
         sent_msg = bot.send_message(
@@ -59,6 +58,7 @@ def option_choose(message):
 
 
 def escolher_especialidade(message):
+    gravar_mensagem(message.text)
     consulta.set_especialidade(especialidades[(int(message.text)) - 1])
     msg = (f'Escolha entre os horarios disponiveis: *1 - {horarios[0]}*, *2 - {horarios[1]}*, *3 - {horarios[2]}*, '
            f'*4 - {horarios[3]}*, *5 - {horarios[4]}*')
@@ -68,6 +68,7 @@ def escolher_especialidade(message):
 
 
 def informar_nome(message):
+    gravar_mensagem(message.text)
     consulta.set_horario(horarios[int(message.text) - 1])
     msg = 'Informe seu nome: '
     sent_msg = bot.send_message(message.chat.id, msg)
@@ -76,6 +77,7 @@ def informar_nome(message):
 
 
 def informar_cpf(message):
+    gravar_mensagem(message.text)
     consulta.set_nome(message.text)
     msg = 'Informe seu cpf: '
     sent_msg = bot.send_message(message.chat.id, msg)
@@ -84,6 +86,7 @@ def informar_cpf(message):
 
 
 def gravar_infos(message):
+    gravar_mensagem(message.text)
     consulta.set_cpf(message.text)
     gravar_consulta(consulta)
     text = ("Consulta agendada com sucesso!\nEscolha uma opção:\n "
@@ -98,6 +101,7 @@ def gravar_infos(message):
 
 
 def verifica_deletar_consulta(message):
+    gravar_mensagem(message.text)
     c = recuperar_dados(message.text)
     if c:
         consulta.set_cpf(c.get_cpf())
@@ -111,6 +115,7 @@ def verifica_deletar_consulta(message):
 
 
 def finaliza_deletar_consulta(message):
+    gravar_mensagem(message.text)
     if message.text == '1':
         deletar_consulta(consulta.get_cpf())
         text = ("Consulta deletada!\nEscolha uma opção:\n"
@@ -135,6 +140,7 @@ def finaliza_deletar_consulta(message):
 
 
 def verifica_alterar_consulta(message):
+    gravar_mensagem(message.text)
     c = recuperar_dados(message.text)
     if c:
         consulta.set_cpf(c.get_cpf())
@@ -149,6 +155,7 @@ def verifica_alterar_consulta(message):
 
 
 def finaliza_alterar_consulta(message):
+    gravar_mensagem(message.text)
     consulta.set_horario(horarios[int(message.text) - 1])
 
     alterar_consulta(consulta)

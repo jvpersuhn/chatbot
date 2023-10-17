@@ -1,5 +1,10 @@
 create schema public;
 
+create table public.mensagens(
+id int auto_increment primary key,
+mensagem varchar(100)
+);
+
 create table public.consulta(
 id int auto_increment primary key,
 especialidade varchar(100),

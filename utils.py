@@ -4,7 +4,6 @@ import mysql.connector
 from model import Consulta
 
 
-
 def gera_horarios():
     horarios = ['8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '13:00', '13:30', '14:00', '14:30',
                 '15:00', '15:30', '16:00', '16:30']
@@ -30,6 +29,23 @@ def gravar_consulta(consulta):
 
     mycursor.execute(sql, val)
     mydb.commit()
+
+
+def gravar_mensagem(mensagem):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="joao1234"
+    )
+
+    mycursor = mydb.cursor()
+
+    sql = 'Insert into public.mensagens (mensagem) values (%s)'
+    val = (mensagem,)
+
+    mycursor.execute(sql, val)
+    mydb.commit()
+
 
 def recuperar_dados(cpf):
     mydb = mysql.connector.connect(
@@ -57,6 +73,7 @@ def recuperar_dados(cpf):
 
     return consulta
 
+
 def deletar_consulta(cpf):
     mydb = mysql.connector.connect(
         host="localhost",
@@ -74,6 +91,7 @@ def deletar_consulta(cpf):
 
     mydb.commit()
 
+
 def alterar_consulta(consulta):
     mydb = mysql.connector.connect(
         host="localhost",
@@ -90,5 +108,3 @@ def alterar_consulta(consulta):
     mycursor.execute(sql, adr)
 
     mydb.commit()
-
-
