@@ -1,6 +1,8 @@
 import random
 import mysql.connector
 
+from model import Consulta
+
 
 
 def gera_horarios():
@@ -28,4 +30,65 @@ def gravar_consulta(consulta):
 
     mycursor.execute(sql, val)
     mydb.commit()
+
+def recuperar_dados(cpf):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="joao1234",
+        database="mysql"
+    )
+
+    mycursor = mydb.cursor()
+
+    sql = "SELECT * FROM public.consulta WHERE cpf = %s"
+    adr = (cpf,)
+
+    mycursor.execute(sql, adr)
+
+    myresult = mycursor.fetchone()
+
+    consulta = Consulta()
+
+    consulta.set_especialidade(myresult[1])
+    consulta.set_horario(myresult[2])
+    consulta.set_nome(myresult[3])
+    consulta.set_cpf(myresult[4])
+
+    return consulta
+
+def deletar_consulta(cpf):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="joao1234",
+        database="mysql"
+    )
+
+    mycursor = mydb.cursor()
+
+    sql = "DELETE FROM public.consulta WHERE cpf = %s"
+    adr = (cpf,)
+
+    mycursor.execute(sql, adr)
+
+    mydb.commit()
+
+def alterar_consulta(consulta):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="joao1234",
+        database="mysql"
+    )
+
+    mycursor = mydb.cursor()
+
+    sql = "UPDATE public.consulta set horario = %s WHERE cpf = %s"
+    adr = (consulta.get_horario(), consulta.get_cpf())
+
+    mycursor.execute(sql, adr)
+
+    mydb.commit()
+
 

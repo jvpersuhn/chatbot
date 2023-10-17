@@ -1,0 +1,9 @@
+create schema public;
+
+create table public.consulta(
+id int auto_increment primary key,
+especialidade varchar(100),
+horario varchar(100),
+nome varchar(100),
+cpf varchar(100)
+);
